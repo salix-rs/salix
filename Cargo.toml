@@ -1,0 +1,47 @@
+[workspace]
+members = ["crates/*"]
+resolver = "2"
+
+[workspace.package]
+authors = [
+  "Benjamin Decreusefond",
+  "Hane '309nahe' Vaillard",
+  "Marc 'risson' Schmitt <marc.schmitt@risson.space>",
+]
+edition = "2021"
+rust-version = "1.87"
+readme = "README.md"
+homepage = "https://github.com/salix-rs/salix"
+repository = "https://github.com/salix-rs/salix.git"
+license = "MIT"
+
+[workspace.lints.rust]
+missing_docs = "warn"
+semicolon_in_expressions_from_macros = "warn"
+unreachable_pub = "warn"
+unused_import_braces = "warn"
+unused_qualifications = "warn"
+
+[workspace.lints.rustdoc]
+missing_crate_level_docs = "warn"
+unescaped_backticks = "warn"
+
+[workspace.lints.clippy]
+branches_sharing_code = "warn"
+cloned_instead_of_copied = "warn"
+dbg_macro = "warn"
+disallowed_types = "warn"
+empty_line_after_outer_attr = "warn"
+exhaustive_enums = "warn"
+exhaustive_structs = "warn"
+inefficient_to_string = "warn"
+macro_use_imports = "warn"
+map_flatten = "warn"
+missing_enforced_import_renames = "warn"
+mut_mut = "warn"
+nonstandard_macro_braces = "warn"
+semicolon_if_nothing_returned = "warn"
+str_to_string = "warn"
+todo = "warn"
+unreadable_literal = "warn"
+unseparated_literal_suffix = "warn"

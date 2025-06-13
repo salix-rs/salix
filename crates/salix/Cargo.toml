@@ -1,0 +1,18 @@
+[package]
+name = "salix"
+version = "0.0.0"
+description = "Manage thousands of devices blazingly fast"
+keywords = ["salix"]
+categories = ["concurrency"]
+authors.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+readme.workspace = true
+homepage.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[dependencies]
+
+[lints]
+workspace = true
