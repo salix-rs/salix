@@ -27,7 +27,7 @@
     in {
       devShell = pkgs.mkShell {
         buildInputs = with pkgs; [
-          # (lib.hiPrio rust-bin.nightly.latest.rustfmt)
+          (lib.hiPrio rust-bin.nightly.latest.rustfmt)
           (rust-bin.fromRustupToolchainFile ./rust-toolchain.toml)
           sccache
 
