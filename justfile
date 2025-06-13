@@ -11,7 +11,7 @@ ci-lint-rustfmt:
 
 # Lint code
 lint:
-  for crate in crates/*; do pushd ${crate} && cargo clippy && popd; done
+  for crate in crates/*; do cd ${crate} && cargo clippy && cd -; done
 [private]
 ci-lint-clippy:
   RUSTFLAGS="-Dwarnings" just lint
@@ -22,7 +22,7 @@ l: fmt lint
 alias b := build
 # Build all rust crates
 build:
-  for crate in crates/*; do pushd ${crate} && cargo build && popd; done
+  for crate in crates/*; do cd ${crate} && cargo build && cd -; done
 [private]
 ci-build:
   RUSTFLAGS="-Dwarnings" just build
