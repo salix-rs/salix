@@ -11,7 +11,7 @@ ci-lint-rustfmt:
 
 # Lint code
 lint:
-  for crate in crates/*; do pushd ${crate} && carrgo clippy && popd; done
+  for crate in crates/*; do pushd ${crate} && cargo clippy && popd; done
 [private]
 ci-lint-clippy:
   RUSTFLAGS="-Dwarnings" just lint
@@ -25,7 +25,7 @@ build:
   for crate in crates/*; do pushd ${crate} && cargo build && popd; done
 [private]
 ci-build:
-  RUSTFLAGS="-Dwarnings" just build-rust
+  RUSTFLAGS="-Dwarnings" just build
 
 # Test salix crate
 test-salix:

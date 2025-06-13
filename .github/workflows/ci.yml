@@ -55,7 +55,7 @@ jobs:
         with:
           tool: just
       - name: Build
-        run: just ci-build-rust
+        run: just ci-build
   test:
     runs-on: ubuntu-latest
     timeout-minutes: 30
