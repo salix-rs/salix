@@ -1,5 +1,5 @@
 [package]
-name = "salix"
+name = "salix-config"
 version = "0.0.0"
 description = "Manage thousands of devices blazingly fast"
 keywords = ["salix"]
@@ -11,14 +11,10 @@ readme.workspace = true
 homepage.workspace = true
 repository.workspace = true
 license.workspace = true
-default-run = "salix"
 
 [dependencies]
 anyhow = "1.0.98"
-clap = { version = "4.5.40", features = ["derive"] }
-rcgen = "0.13.2"
-salix-controller = { path = "../salix-controller" }
-salix-agent = { path = "../salix-agent" }
+config = "0.15.11"
 
 [lints]
 workspace = true
