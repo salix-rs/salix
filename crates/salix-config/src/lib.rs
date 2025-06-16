@@ -26,11 +26,13 @@ pub struct Config {
 }
 
 pub fn get_config(config_path: Option<PathBuf>) -> Result<Config> {
-    let config_path = config_path.map(| x | Ok(x)).unwrap_or_else( || {
-        let config_path = current_dir()?;
+    let config_path = if let Some(config_path) = config_path {
+        config_path
+    } else {
+        let mut config_path = current_dir()?;
         config_path.push("salix.toml");
-        Ok(config_path)
-    })?;
+        config_path
+    };
 
     //TODO: Add env source
     let settings = config::Config::builder().add_source(config::File::from(config_path)).build()?;
