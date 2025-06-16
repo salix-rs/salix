@@ -1424,6 +1424,7 @@ version = "0.0.0"
 dependencies = [
  "anyhow",
  "clap",
+ "config",
  "rcgen",
  "salix-agent",
  "salix-controller",
@@ -1438,6 +1439,7 @@ dependencies = [
  "quinn",
  "quinn-proto",
  "rustls",
+ "salix-config",
  "tokio",
  "tracing",
  "url",
@@ -1449,6 +1451,7 @@ version = "0.0.0"
 dependencies = [
  "anyhow",
  "config",
+ "serde",
 ]
 
 [[package]]

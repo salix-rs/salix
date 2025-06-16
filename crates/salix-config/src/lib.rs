@@ -1,1 +1,39 @@
 //! Salix config
+
+use std::path::PathBuf;
+use std::env::current_dir;
+use anyhow::Result;
+
+use serde::Deserialize;
+
+#[derive(Deserialize, Clone, Debug)]
+pub struct ControllerConfig {
+    listen: String,
+    cert_path: PathBuf,
+    key_path: PathBuf,
+}
+
+#[derive(Deserialize, Clone, Debug)]
+pub struct AgentConfig {
+    controller_address: String,
+    cert_path: PathBuf,
+}
+
+#[derive(Deserialize, Clone, Debug)]
+pub struct Config {
+    controller: ControllerConfig,    
+    agent: AgentConfig,
+}
+
+pub fn get_config(config_path: Option<PathBuf>) -> Result<Config> {
+    let config_path = config_path.map(| x | Ok(x)).unwrap_or_else( || {
+        let config_path = current_dir()?;
+        config_path.push("salix.toml");
+        Ok(config_path)
+    })?;
+
+    //TODO: Add env source
+    let settings = config::Config::builder().add_source(config::File::from(config_path)).build()?;
+    Ok(settings.try_deserialize()?)
+}
+
