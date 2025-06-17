@@ -1,9 +1,8 @@
 //! Salix config
 
-use std::path::PathBuf;
-use std::env::current_dir;
-use anyhow::Result;
+use std::{env::current_dir, path::PathBuf};
 
+use anyhow::Result;
 use serde::Deserialize;
 
 #[derive(Deserialize, Clone, Debug)]
@@ -21,7 +20,7 @@ pub struct AgentConfig {
 
 #[derive(Deserialize, Clone, Debug)]
 pub struct Config {
-    controller: ControllerConfig,    
+    controller: ControllerConfig,
     agent: AgentConfig,
 }
 
@@ -34,8 +33,9 @@ pub fn get_config(config_path: Option<PathBuf>) -> Result<Config> {
         config_path
     };
 
-    //TODO: Add env source
-    let settings = config::Config::builder().add_source(config::File::from(config_path)).build()?;
+    // TODO: Add env source
+    let settings = config::Config::builder()
+        .add_source(config::File::from(config_path))
+        .build()?;
     Ok(settings.try_deserialize()?)
 }
-

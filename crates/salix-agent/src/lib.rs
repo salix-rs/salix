@@ -4,7 +4,6 @@ use std::path::PathBuf;
 
 use anyhow::Result;
 use clap::Parser;
-
 use salix_config::get_config;
 
 /// CLI arguments
@@ -18,7 +17,6 @@ pub struct Cli {
 /// Main function
 #[tokio::main]
 pub async fn run(cli: Cli) -> Result<()> {
-    let config = get_config(cli.config)?;
-    dbg!(config);
+    let _config = get_config(cli.config)?;
     Ok(())
 }

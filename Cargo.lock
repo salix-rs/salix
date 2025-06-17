@@ -1424,7 +1424,6 @@ version = "0.0.0"
 dependencies = [
  "anyhow",
  "clap",
- "config",
  "rcgen",
  "salix-agent",
  "salix-controller",
