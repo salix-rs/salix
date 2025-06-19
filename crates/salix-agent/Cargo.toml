@@ -16,8 +16,8 @@ license.workspace = true
 anyhow = "1.0.98"
 clap = { version = "4.5.40", features = ["derive"] }
 gethostname = "1.0.2"
-salix-config = { path = "../salix-config" }
-salix-proto = { path = "../salix-proto" }
+salix-config = { version = "0.0.0", path = "../salix-config" }
+salix-proto = { version = "0.0.0", path = "../salix-proto" }
 tokio = { version = "1.45.1", features = ["full"] }
 tonic = "0.13.1"
 uuid = { version = "1.17.0", features = ["v7"] }

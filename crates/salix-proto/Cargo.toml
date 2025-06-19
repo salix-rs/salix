@@ -21,4 +21,4 @@ tonic = "0.13.1"
 workspace = true
 
 [build-dependencies]
-tonic-build = "*"
+tonic-build = "0.13.1"

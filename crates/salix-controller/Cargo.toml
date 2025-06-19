@@ -15,8 +15,8 @@ license.workspace = true
 [dependencies]
 anyhow = "1.0.98"
 clap = { version = "4.5.40", features = ["derive"] }
-salix-config = { path = "../salix-config" }
-salix-proto = { path = "../salix-proto" }
+salix-config = { version = "0.0.0", path = "../salix-config" }
+salix-proto = { version = "0.0.0", path = "../salix-proto" }
 tokio = { version = "1.45.1", features = ["full"] }
 tonic = "0.13.1"
 
