@@ -31,6 +31,8 @@
           (rust-bin.fromRustupToolchainFile ./rust-toolchain.toml)
           sccache
 
+          protobuf
+
           cargo-msrv
           cargo-release
           cargo-workspaces

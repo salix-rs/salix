@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+package salix;
+
+message RegistrationRequest {
+  optional string client_id = 1;
+  optional uint64 timestamp = 2;
+  optional string hostname = 3;
+  optional string version = 4;
+}
+
+message RegistrationResponse {
+  optional bool success = 1;
+  optional string error_message = 2;
+}
+
+message ExecutionRequest {
+  optional string command = 1;
+}
+
+message ExecutionResponse {
+  optional uint64 exit_code = 1;
+  optional string stdout = 2;
+  optional string stderr = 3;
+}
+
+message PingMessage {
+  optional string client_id = 1;
+  optional uint64 timestamp = 2;
+}
+
+message GoodbyeMessage {
+  optional string client_id = 1;
+  optional uint64 timestamp = 2;
+}
+
+message MessageRequest {
+  oneof message {
+    PingMessage ping_message = 1;
+    GoodbyeMessage goodbye_message = 2;
+  }
+}
+
+message MessageResponse {}
+
+// Controller
+service ControllerService {
+  rpc Register(RegistrationRequest) returns (RegistrationResponse);
+  rpc Message(MessageRequest) returns (MessageResponse);
+}
+
+// Agent
+service AgentService {
+  rpc Execute(ExecutionRequest) returns (ExecutionResponse);
+}
