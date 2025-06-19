@@ -1,27 +1,27 @@
 //! Salix config
 
-use std::{env::current_dir, path::PathBuf};
+use std::{env::current_dir, net::SocketAddr, path::PathBuf};
 
 use anyhow::Result;
 use serde::Deserialize;
 
 #[derive(Deserialize, Clone, Debug)]
 pub struct ControllerConfig {
-    listen: String,
-    cert_path: PathBuf,
-    key_path: PathBuf,
+    pub listen: SocketAddr,
+    pub cert_path: PathBuf,
+    pub key_path: PathBuf,
 }
 
 #[derive(Deserialize, Clone, Debug)]
 pub struct AgentConfig {
-    controller_address: String,
-    cert_path: PathBuf,
+    pub controller_address: String,
+    pub cert_path: PathBuf,
 }
 
 #[derive(Deserialize, Clone, Debug)]
 pub struct Config {
-    controller: ControllerConfig,
-    agent: AgentConfig,
+    pub controller: ControllerConfig,
+    pub agent: AgentConfig,
 }
 
 pub fn get_config(config_path: Option<PathBuf>) -> Result<Config> {

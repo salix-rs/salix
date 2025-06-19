@@ -1,11 +1,15 @@
-//! Salix
-use std::{path::PathBuf, sync::Arc};
+//! Salix controller
+use std::{path::PathBuf, sync::Arc, time::Duration};
 
-use anyhow::{Result, anyhow};
+use anyhow::Result;
 use clap::Parser;
-use quinn_proto::crypto::rustls::QuicServerConfig;
-use rustls::pki_types::PrivatePkcs8KeyDer;
-use tracing::{error, info};
+use salix_config::get_config;
+use salix_proto::{
+    MessageRequest, RegistrationRequest,
+    controller_service_server::{ControllerService, ControllerServiceServer},
+};
+use tokio::{sync::Mutex, task::JoinSet, time::sleep};
+use tonic::{Request, Response, Status, transport::Server};
 
 /// Our own lovely constant
 pub const ALPN_QUIC_SALIX: &[&[u8]] = &[b"salix"];
@@ -18,90 +22,90 @@ pub struct Cli {
     config: Option<PathBuf>,
 }
 
+#[derive(Debug)]
+struct Agent {
+    agent_id: String,
+    hostname: String,
+    version: String,
+}
+
+#[derive(Debug, Default)]
+struct ControllerState {
+    agents: Vec<Agent>,
+}
+
+#[derive(Debug, Default)]
+struct Controller {
+    state: Arc<Mutex<ControllerState>>,
+}
+
+impl Controller {
+    fn new(state: Arc<Mutex<ControllerState>>) -> Self {
+        Self { state }
+    }
+}
+
+#[tonic::async_trait]
+impl ControllerService for Controller {
+    async fn register(
+        &self,
+        request: Request<RegistrationRequest>,
+    ) -> Result<Response<()>, Status> {
+        let request = request.into_inner();
+        if request.agent_id.is_none() {
+            return Err(Status::invalid_argument("agent_id is required"));
+        }
+
+        let mut state = self.state.lock().await;
+        state.agents.push(Agent {
+            agent_id: request.agent_id().to_owned(),
+            hostname: request.hostname().to_owned(),
+            version: request.version().to_owned(),
+        });
+
+        Ok(Response::new(()))
+    }
+
+    async fn message(&self, _request: Request<MessageRequest>) -> Result<Response<()>, Status> {
+        Ok(Response::new(()))
+    }
+}
+
+async fn print_state(state_m: Arc<Mutex<ControllerState>>) -> Result<(), tonic::transport::Error> {
+    loop {
+        let state = state_m.lock().await;
+        println!("Currently registered agents:");
+        for agent in &state.agents {
+            println!(
+                "{agent_id} {hostname} {version}",
+                agent_id = agent.agent_id,
+                hostname = agent.hostname,
+                version = agent.version
+            );
+        }
+        drop(state);
+        sleep(Duration::from_secs(10)).await;
+    }
+}
+
 /// Main function
 #[tokio::main]
-pub async fn run(_cli: Cli) -> Result<()> {
-    // let pwd = std::env::current_dir()?;
-    // let cert_path = pwd.join("cert.der");
-    // let key_path = pwd.join("key.der");
-    let (certs, key) = {
-        let cert = rcgen::generate_simple_self_signed(vec!["localhost".into()]).unwrap();
-        let key = PrivatePkcs8KeyDer::from(cert.key_pair.serialize_der());
-        let cert = cert.cert.into();
-        (vec![cert], key.into())
-    };
+pub async fn run(cli: Cli) -> Result<()> {
+    let config = get_config(cli.config)?;
 
-    rustls::crypto::CryptoProvider::install_default(rustls::crypto::aws_lc_rs::default_provider())
-        .unwrap();
+    let state = Arc::new(Mutex::new(ControllerState::default()));
 
-    let mut server_crypto = rustls::ServerConfig::builder()
-        .with_no_client_auth()
-        .with_single_cert(certs, key)?;
-    server_crypto.alpn_protocols = ALPN_QUIC_SALIX.iter().map(|&x| x.into()).collect();
+    let controller = Controller::new(state.clone());
 
-    let mut server_config =
-        quinn::ServerConfig::with_crypto(Arc::new(QuicServerConfig::try_from(server_crypto)?));
-    let transport_config = Arc::get_mut(&mut server_config.transport).unwrap();
-    transport_config.max_concurrent_uni_streams(0_u8.into());
+    let server = Server::builder()
+        .add_service(ControllerServiceServer::new(controller))
+        .serve(config.controller.listen);
+    let state_printer = print_state(state.clone());
 
-    let endpoint = quinn::Endpoint::server(server_config, "[::1]:4433".parse()?)?;
-    eprintln!("listening on {}", endpoint.local_addr()?);
-
-    while let Some(conn) = endpoint.accept().await {
-        let fut = handle_connection(conn);
-        tokio::spawn(async move {
-            if let Err(e) = fut.await {
-                error!("connection failed: {reason}", reason = e.to_string());
-            }
-        });
-    }
-    Ok(())
-}
-
-async fn handle_connection(conn: quinn::Incoming) -> Result<()> {
-    let connection = conn.await?;
-    loop {
-        let stream = connection.accept_bi().await;
-        let stream = match stream {
-            Err(quinn::ConnectionError::ApplicationClosed { .. }) => {
-                return Ok(());
-            }
-            Err(e) => {
-                return Err(e.into());
-            }
-            Ok(s) => s,
-        };
-        let fut = handle_request(stream);
-        tokio::spawn(async move {
-            if let Err(e) = fut.await {
-                eprintln!("failed: {reason}", reason = e.to_string());
-            }
-        });
-    }
-}
-
-async fn handle_request(
-    (mut send, mut recv): (quinn::SendStream, quinn::RecvStream),
-) -> Result<()> {
-    let req = recv
-        .read_to_end(64 * 1024)
-        .await
-        .map_err(|e| anyhow!("faield request request: {}", e))?;
-
-    let mut escaped = String::new();
-    for &x in &req[..] {
-        let part = std::ascii::escape_default(x).collect::<Vec<_>>();
-        escaped.push_str(str::from_utf8(&part).unwrap());
-    }
-
-    info!(content = %escaped);
-
-    send.write_all(escaped.as_bytes())
-        .await
-        .map_err(|e| anyhow!("failed to send response: {}", e))?;
-
-    send.finish().unwrap();
-    info!("complete");
+    let mut set = JoinSet::new();
+    set.spawn(server);
+    set.spawn(state_printer);
+    set.join_all().await;
 
     Ok(())
 }
