@@ -18,5 +18,6 @@ pub struct Cli {
 #[tokio::main]
 pub async fn run(cli: Cli) -> Result<()> {
     let _config = get_config(cli.config)?;
+    dbg!(_config);
     Ok(())
 }

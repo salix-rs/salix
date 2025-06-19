@@ -1,18 +1,19 @@
 //! Salix config
 
-use std::os::unix::net::SocketAddr;
+use std::net::SocketAddr;
 use std::{env::current_dir, path::PathBuf};
 
 use anyhow::Result;
 use serde::Deserialize;
-use serde::Serialize;
+
+mod default_values;
 
 //TODO: Add enum + implement in conf structs
 
 #[derive(Deserialize, Clone, Debug)]
 //Controller Config
 pub struct ControllerConfig {
-    listen: String,
+    listen: SocketAddr,
     cert_path: PathBuf,
     key_path: PathBuf,
 }
@@ -20,8 +21,8 @@ pub struct ControllerConfig {
 #[derive(Deserialize, Clone, Debug)]
 //Agent Config
 pub struct AgentConfig {
-    #[serde(default = "default_controller_address")]
     controller_address: String,
+    #[serde(default = "default_values::default_agent_cert_path")]
     cert_path: PathBuf,
 }
 
@@ -30,10 +31,6 @@ pub struct AgentConfig {
 pub struct Config {
     controller: ControllerConfig,
     agent: AgentConfig,
-}
-
-pub fn default_controller_address() -> String {
-    return "127.0.0.1".to_string();
 }
 
 // Get configuration from sources
