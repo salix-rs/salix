@@ -74,7 +74,7 @@ async fn handle_connection(conn: quinn::Incoming) -> Result<()> {
         let fut = handle_request(stream);
         tokio::spawn(async move {
             if let Err(e) = fut.await {
-                eprintln!("failed: {reason}", reason = e.to_string());
+                eprintln!("failed: {e}");
             }
         });
     }

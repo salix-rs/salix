@@ -1,8 +1,8 @@
 //! Salix config
 
+use log::{self, Level};
 use std::net::SocketAddr;
 use std::{env::current_dir, path::PathBuf};
-use log::{self, Level};
 
 use anyhow::Result;
 use serde::Deserialize;
@@ -17,11 +17,14 @@ where
     let s: String = Deserialize::deserialize(deserializer)?;
     match s.to_ascii_lowercase().as_str() {
         "error" => Ok(Level::Error),
-        "warn"  => Ok(Level::Warn),
-        "info"  => Ok(Level::Info),
+        "warn" => Ok(Level::Warn),
+        "info" => Ok(Level::Info),
         "debug" => Ok(Level::Debug),
         "trace" => Ok(Level::Trace),
-        _ => Err(serde::de::Error::custom(format!("invalid log level: {}", s))),
+        _ => Err(serde::de::Error::custom(format!(
+            "invalid log level: {}",
+            s
+        ))),
     }
 }
 
@@ -46,7 +49,10 @@ pub struct AgentConfig {
 pub struct Config {
     controller: ControllerConfig,
     agent: AgentConfig,
-    #[serde(default = "default_values::default_config_log_level", deserialize_with = "deserialize_log_level")]
+    #[serde(
+        default = "default_values::default_config_log_level",
+        deserialize_with = "deserialize_log_level"
+    )]
     log_level: Level,
 }
 

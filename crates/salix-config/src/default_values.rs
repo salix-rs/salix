@@ -1,7 +1,6 @@
 // Defining default values for the config file
 
 use std::{fmt::Debug, path::PathBuf};
-use log;
 
 pub fn default_agent_cert_path() -> PathBuf {
     let mut path = PathBuf::new();
