@@ -12,13 +12,16 @@ message RegistrationRequest {
 }
 
 message ExecutionRequest {
-  optional string command = 1;
+  optional string execution_id = 1;
+  optional string command = 2;
 }
 
 message ExecutionResponse {
-  optional uint64 exit_code = 1;
-  optional string stdout = 2;
-  optional string stderr = 3;
+  optional string execution_id = 1;
+  optional string agent_id = 2;
+  optional uint64 exit_code = 3;
+  optional string stdout = 4;
+  optional string stderr = 5;
 }
 
 message PingMessage {
@@ -35,16 +38,8 @@ message MessageRequest {
   oneof message {
     PingMessage ping_message = 1;
     GoodbyeMessage goodbye_message = 2;
+    RegistrationRequest registration_request = 3;
+    ExecutionRequest execution_request = 4;
+    ExecutionResponse execution_response = 5;
   }
-}
-
-// Controller
-service ControllerService {
-  rpc Register(RegistrationRequest) returns (google.protobuf.Empty);
-  rpc Message(MessageRequest) returns (google.protobuf.Empty);
-}
-
-// Agent
-service AgentService {
-  rpc Execute(ExecutionRequest) returns (ExecutionResponse);
 }
