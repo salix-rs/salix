@@ -8,7 +8,7 @@ authors = [
   "Hane '309nahe' Vaillard",
   "Marc 'risson' Schmitt <marc.schmitt@risson.space>",
 ]
-edition = "2021"
+edition = "2024"
 rust-version = "1.87"
 readme = "README.md"
 homepage = "https://github.com/salix-rs/salix"
