@@ -25,6 +25,7 @@ jobs:
       matrix:
         job:
           - clippy
+          - rustfmt
         include:
           - job: rustfmt
             toolchain: nightly
@@ -33,16 +34,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: mozilla-actions/sccache-action@v0.0.9
-      - if: ${{ matrix.toolchain }}
-        uses: actions-rust-lang/setup-rust-toolchain@v1
-        with:
-          toolchain: ${{ matrix.toolchain }}
-          components: ${{ matrix.components }}
-      - if: ${{ ! matrix.toolchain }}
-        uses: actions-rust-lang/setup-rust-toolchain@v1
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
       - uses: taiki-e/install-action@v2
         with:
-          tool: just
+          tool: just,protoc
       - name: Lint
         run: just ci-lint-${{ matrix.job }}
   build:
@@ -53,7 +48,7 @@ jobs:
       - uses: actions-rust-lang/setup-rust-toolchain@v1
       - uses: taiki-e/install-action@v2
         with:
-          tool: just
+          tool: just,protoc
       - name: Build
         run: just ci-build
   test:
@@ -65,7 +60,7 @@ jobs:
       - uses: actions-rust-lang/setup-rust-toolchain@v1
       - uses: taiki-e/install-action@v2
         with:
-          tool: just
+          tool: just,protoc
       - name: Test
         run: just ci-test
   check-ci:

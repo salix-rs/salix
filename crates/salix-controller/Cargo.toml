@@ -17,12 +17,13 @@ anyhow = "1.0.98"
 clap = { version = "4.5.40", features = ["derive"] }
 quinn = "0.11.8"
 quinn-proto = "0.11.12"
-rcgen = "0.13.2"
-ring = "0.17.14"
-rustls = "0.23.27"
+rustls = "0.23.28"
+rustls-pemfile = "2.2.0"
+salix-config = { version = "0.0.0", path = "../salix-config" }
+salix-proto = { version = "0.0.0", path = "../salix-proto" }
 tokio = { version = "1.45.1", features = ["full"] }
-tracing = "0.1.41"
-tracing-subscriber = "0.3.19"
+tonic = "0.13.1"
+uuid = { version = "1.17.0", features = ["v7"] }
 
 [lints]
 workspace = true

@@ -8,7 +8,7 @@ authors = [
   "Hane '309nahe' Vaillard",
   "Marc 'risson' Schmitt <marc.schmitt@risson.space>",
 ]
-edition = "2021"
+edition = "2024"
 rust-version = "1.87"
 readme = "README.md"
 homepage = "https://github.com/salix-rs/salix"
@@ -16,11 +16,9 @@ repository = "https://github.com/salix-rs/salix.git"
 license = "MIT"
 
 [workspace.lints.rust]
-missing_docs = "warn"
 semicolon_in_expressions_from_macros = "warn"
 unreachable_pub = "warn"
 unused_import_braces = "warn"
-unused_qualifications = "warn"
 
 [workspace.lints.rustdoc]
 missing_crate_level_docs = "warn"
@@ -32,8 +30,6 @@ cloned_instead_of_copied = "warn"
 dbg_macro = "warn"
 disallowed_types = "warn"
 empty_line_after_outer_attr = "warn"
-exhaustive_enums = "warn"
-exhaustive_structs = "warn"
 inefficient_to_string = "warn"
 macro_use_imports = "warn"
 map_flatten = "warn"

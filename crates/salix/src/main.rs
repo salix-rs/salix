@@ -31,7 +31,7 @@ cert_path = "salix.pem"
 key_path = "salix.key"
 
 [agent]
-controller_address = "localhost:1312"
+controller_address = "http://localhost:1312"
 cert_path = "salix.pem"
 "#;
 

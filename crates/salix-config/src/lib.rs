@@ -1,8 +1,7 @@
 //! Salix config
 
 use log::{self, Level};
-use std::net::SocketAddr;
-use std::{env::current_dir, path::PathBuf};
+use std::{env::current_dir, net::SocketAddr, path::PathBuf};
 
 use anyhow::Result;
 use serde::Deserialize;
@@ -28,35 +27,35 @@ where
     }
 }
 
+/// Controller Config
 #[derive(Deserialize, Clone, Debug)]
-//Controller Config
 pub struct ControllerConfig {
-    listen: SocketAddr,
-    cert_path: PathBuf,
-    key_path: PathBuf,
+    pub listen: SocketAddr,
+    pub cert_path: PathBuf,
+    pub key_path: PathBuf,
 }
 
+/// Agent Config
 #[derive(Deserialize, Clone, Debug)]
-//Agent Config
 pub struct AgentConfig {
-    controller_address: String,
+    pub controller_address: String,
     #[serde(default = "default_values::default_agent_cert_path")]
-    cert_path: PathBuf,
+    pub cert_path: PathBuf,
 }
 
+/// Main Config
 #[derive(Deserialize, Clone, Debug)]
-// General Config
 pub struct Config {
-    controller: ControllerConfig,
-    agent: AgentConfig,
+    pub controller: ControllerConfig,
+    pub agent: AgentConfig,
     #[serde(
         default = "default_values::default_config_log_level",
         deserialize_with = "deserialize_log_level"
     )]
-    log_level: Level,
+    pub log_level: Level,
 }
 
-// Get configuration from sources
+/// Get configuration from sources
 pub fn get_config(config_path: Option<PathBuf>) -> Result<Config> {
     let config_path = if let Some(config_path) = config_path {
         config_path

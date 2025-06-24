@@ -1,5 +1,5 @@
 [package]
-name = "salix-agent"
+name = "salix-proto"
 version = "0.0.0"
 description = "Manage thousands of devices blazingly fast"
 keywords = ["salix"]
@@ -13,14 +13,12 @@ repository.workspace = true
 license.workspace = true
 
 [dependencies]
-anyhow = "1.0.98"
-clap = { version = "4.5.40", features = ["derive"] }
-gethostname = "1.0.2"
-salix-config = { version = "0.0.0", path = "../salix-config" }
-salix-proto = { version = "0.0.0", path = "../salix-proto" }
+prost = "0.13"
 tokio = { version = "1.45.1", features = ["full"] }
 tonic = "0.13.1"
-uuid = { version = "1.17.0", features = ["v7"] }
 
 [lints]
 workspace = true
+
+[build-dependencies]
+tonic-build = "0.13.1"

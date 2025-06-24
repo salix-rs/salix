@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+package salix;
+
+message RegistrationRequest {
+  optional string agent_id = 1;
+  optional uint64 timestamp = 2;
+  optional string hostname = 3;
+  optional string version = 4;
+}
+
+message ExecutionRequest {
+  optional string execution_id = 1;
+  optional string command = 2;
+}
+
+message ExecutionResponse {
+  optional string execution_id = 1;
+  optional string agent_id = 2;
+  optional uint64 exit_code = 3;
+  optional string stdout = 4;
+  optional string stderr = 5;
+}
+
+message PingMessage {
+  optional string agent_id = 1;
+  optional uint64 timestamp = 2;
+}
+
+message GoodbyeMessage {
+  optional string agent_id = 1;
+  optional uint64 timestamp = 2;
+}
+
+message MessageRequest {
+  oneof message {
+    PingMessage ping_message = 1;
+    GoodbyeMessage goodbye_message = 2;
+    RegistrationRequest registration_request = 3;
+    ExecutionRequest execution_request = 4;
+    ExecutionResponse execution_response = 5;
+  }
+}
