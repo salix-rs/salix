@@ -6,8 +6,15 @@ use std::{env::current_dir, net::SocketAddr, path::PathBuf};
 use anyhow::Result;
 use serde::Deserialize;
 
-mod default_values;
-mod utils;
+pub fn default_agent_cert_path() -> PathBuf {
+    let mut path = PathBuf::new();
+    path.push("salix.pem");
+    return path;
+}
+
+pub fn default_config_log_level() -> log::Level {
+    return log::Level::Info;
+}
 
 fn deserialize_log_level<'de, D>(deserializer: D) -> Result<Level, D::Error>
 where
@@ -39,7 +46,7 @@ pub struct ControllerConfig {
 #[derive(Deserialize, Clone, Debug)]
 pub struct AgentConfig {
     pub controller_address: String,
-    #[serde(default = "default_values::default_agent_cert_path")]
+    #[serde(default = "default_agent_cert_path")]
     pub cert_path: PathBuf,
 }
 
@@ -49,7 +56,7 @@ pub struct Config {
     pub controller: ControllerConfig,
     pub agent: AgentConfig,
     #[serde(
-        default = "default_values::default_config_log_level",
+        default = "default_config_log_level",
         deserialize_with = "deserialize_log_level"
     )]
     pub log_level: Level,

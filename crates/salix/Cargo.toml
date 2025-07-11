@@ -14,11 +14,9 @@ license.workspace = true
 default-run = "salix"
 
 [dependencies]
-anyhow = "1.0.98"
-clap = { version = "4.5.40", features = ["derive"] }
-rcgen = "0.13.2"
-salix-controller = { path = "../salix-controller" }
-salix-agent = { path = "../salix-agent" }
+anyhow.workspace = true
+clap.workspace = true
+rcgen.workspace = true
 
-[lints]
-workspace = true
+salix-agent.workspace = true
+salix-controller.workspace = true

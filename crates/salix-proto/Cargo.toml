@@ -13,12 +13,9 @@ repository.workspace = true
 license.workspace = true
 
 [dependencies]
-prost = "0.13"
-tokio = { version = "1.45.1", features = ["full"] }
-tonic = "0.13.1"
-
-[lints]
-workspace = true
+prost.workspace = true
+prost-types.workspace = true
+tokio.workspace = true
 
 [build-dependencies]
-tonic-build = "0.13.1"
+prost-build.workspace = true

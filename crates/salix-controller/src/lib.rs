@@ -72,8 +72,8 @@ impl State {
     ) -> Result<bool> {
         let request_message = self.read_protobuf_message(&mut recv).await?;
 
-        let response_message: Option<salix_proto::MessageRequest> = match request_message.message {
-            Some(salix_proto::message_request::Message::RegistrationRequest(_req)) => None,
+        let response_message: Option<salix_proto::Message> = match request_message.message {
+            Some(salix_proto::message::Message::RegistrationRequest(_req)) => None,
             _ => None,
         };
 
@@ -88,7 +88,7 @@ impl State {
     async fn read_protobuf_message(
         &self,
         stream: &mut quinn::RecvStream,
-    ) -> Result<salix_proto::MessageRequest> {
+    ) -> Result<salix_proto::Message> {
         let mut len_bytes = [0_u8; 4];
         stream.read_exact(&mut len_bytes).await?;
         let len = u32::from_be_bytes(len_bytes) as usize;
@@ -100,14 +100,14 @@ impl State {
         let mut buf = vec![0_u8; len];
         stream.read_exact(&mut buf).await?;
 
-        let message = salix_proto::MessageRequest::decode(&mut Cursor::new(buf))?;
+        let message = salix_proto::Message::decode(&mut Cursor::new(buf))?;
         Ok(message)
     }
 
     async fn write_protobuf_message(
         &self,
         stream: &mut quinn::SendStream,
-        message: salix_proto::MessageRequest,
+        message: salix_proto::Message,
     ) -> Result<()> {
         let mut buf = Vec::new();
         message.encode(&mut buf)?;

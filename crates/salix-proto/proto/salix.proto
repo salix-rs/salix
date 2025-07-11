@@ -24,20 +24,20 @@ message ExecutionResponse {
   optional string stderr = 5;
 }
 
-message PingMessage {
+message PingNotification {
   optional string agent_id = 1;
   optional uint64 timestamp = 2;
 }
 
-message GoodbyeMessage {
+message GoodbyeNotification {
   optional string agent_id = 1;
   optional uint64 timestamp = 2;
 }
 
-message MessageRequest {
+message Message {
   oneof message {
-    PingMessage ping_message = 1;
-    GoodbyeMessage goodbye_message = 2;
+    PingNotification ping_message = 1;
+    GoodbyeNotification goodbye_message = 2;
     RegistrationRequest registration_request = 3;
     ExecutionRequest execution_request = 4;
     ExecutionResponse execution_response = 5;

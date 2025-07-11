@@ -15,29 +15,25 @@ homepage = "https://github.com/salix-rs/salix"
 repository = "https://github.com/salix-rs/salix.git"
 license = "MIT"
 
-[workspace.lints.rust]
-semicolon_in_expressions_from_macros = "warn"
-unreachable_pub = "warn"
-unused_import_braces = "warn"
+[workspace.dependencies]
+anyhow = "1.0.98"
+clap = { version = "4.5.41", features = ["derive"] }
+config = "0.15.13"
+gethostname = "1.0.2"
+log = { version = "0.4.27", features = ["serde"] }
+prost = "0.14.1"
+prost-build = "0.14.1"
+prost-types = "0.14.1"
+quinn = "0.11.8"
+quinn-proto = "0.11.12"
+rcgen = "0.14.2"
+rustls = "0.23.28"
+rustls-pemfile = "2.2.0"
+serde = { version = "1.0.219", features = ["derive"] }
+tokio = { version = "1.46.1", features = ["full"] }
+uuid = { version = "1.17.0", features = ["v7"] }
 
-[workspace.lints.rustdoc]
-missing_crate_level_docs = "warn"
-unescaped_backticks = "warn"
-
-[workspace.lints.clippy]
-branches_sharing_code = "warn"
-cloned_instead_of_copied = "warn"
-dbg_macro = "warn"
-disallowed_types = "warn"
-empty_line_after_outer_attr = "warn"
-inefficient_to_string = "warn"
-macro_use_imports = "warn"
-map_flatten = "warn"
-missing_enforced_import_renames = "warn"
-mut_mut = "warn"
-nonstandard_macro_braces = "warn"
-semicolon_if_nothing_returned = "warn"
-str_to_string = "warn"
-todo = "warn"
-unreadable_literal = "warn"
-unseparated_literal_suffix = "warn"
+salix-agent = { version = "0.0.0", path = "crates/salix-agent" }
+salix-config = { version = "0.0.0", path = "crates/salix-config" }
+salix-controller = { path = "crates/salix-controller" }
+salix-proto = { version = "0.0.0", path = "crates/salix-proto" }

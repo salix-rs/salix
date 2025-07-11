@@ -32,6 +32,7 @@
 
           protobuf
 
+          cargo-expand
           cargo-msrv
           cargo-release
           cargo-workspaces
