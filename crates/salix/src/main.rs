@@ -42,7 +42,7 @@ fn gen_config(directory: Option<PathBuf>) -> Result<()> {
         return Err(anyhow!("{} must be a directory.", dir_path.display()));
     }
 
-    let CertifiedKey { cert, key_pair } =
+    let CertifiedKey { cert, signing_key } =
         generate_simple_self_signed(vec!["localhost".to_owned()])?;
 
     let mut cert_path = directory.clone();
@@ -53,7 +53,7 @@ fn gen_config(directory: Option<PathBuf>) -> Result<()> {
     let mut key_path = directory.clone();
     key_path.push("salix.key");
     let mut key_file = File::create(key_path.as_path())?;
-    key_file.write_all(key_pair.serialize_pem().as_bytes())?;
+    key_file.write_all(signing_key.serialize_pem().as_bytes())?;
 
     let mut config_path = directory.clone();
     config_path.push("salix.toml");

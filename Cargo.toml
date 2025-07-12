@@ -17,6 +17,7 @@ license = "MIT"
 
 [workspace.dependencies]
 anyhow = "1.0.98"
+axum = "0.8.4"
 clap = { version = "4.5.41", features = ["derive"] }
 config = "0.15.13"
 gethostname = "1.0.2"

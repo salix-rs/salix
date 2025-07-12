@@ -21,6 +21,7 @@ pub struct Cli {
 #[tokio::main]
 pub async fn run(cli: Cli) -> Result<()> {
     let config = get_config(cli.config)?;
+    let _ = rustls::crypto::aws_lc_rs::default_provider().install_default();
 
     let agent_id = Uuid::now_v7();
 
