@@ -9,11 +9,11 @@ use serde::Deserialize;
 pub fn default_agent_cert_path() -> PathBuf {
     let mut path = PathBuf::new();
     path.push("salix.pem");
-    return path;
+    path
 }
 
 pub fn default_config_log_level() -> log::Level {
-    return log::Level::Info;
+    log::Level::Info
 }
 
 fn deserialize_log_level<'de, D>(deserializer: D) -> Result<Level, D::Error>
