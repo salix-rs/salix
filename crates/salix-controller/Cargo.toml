@@ -1,5 +1,5 @@
 [package]
-name = "salix"
+name = "salix-controller"
 version = "0.0.0"
 description = "Manage thousands of devices blazingly fast"
 keywords = ["salix"]
@@ -11,12 +11,18 @@ readme.workspace = true
 homepage.workspace = true
 repository.workspace = true
 license.workspace = true
-default-run = "salix"
 
 [dependencies]
 anyhow.workspace = true
+axum.workspace = true
 clap.workspace = true
-rcgen.workspace = true
+prost.workspace = true
+quinn.workspace = true
+quinn-proto.workspace = true
+rustls.workspace = true
+rustls-pemfile.workspace = true
+tokio.workspace = true
+uuid.workspace = true
 
-salix-agent.workspace = true
-salix-controller.workspace = true
+salix-config.workspace = true
+salix-proto.workspace = true

@@ -1,5 +1,5 @@
 [package]
-name = "salix"
+name = "salix-proto"
 version = "0.0.0"
 description = "Manage thousands of devices blazingly fast"
 keywords = ["salix"]
@@ -11,12 +11,11 @@ readme.workspace = true
 homepage.workspace = true
 repository.workspace = true
 license.workspace = true
-default-run = "salix"
 
 [dependencies]
-anyhow.workspace = true
-clap.workspace = true
-rcgen.workspace = true
+prost.workspace = true
+prost-types.workspace = true
+tokio.workspace = true
 
-salix-agent.workspace = true
-salix-controller.workspace = true
+[build-dependencies]
+prost-build.workspace = true
