@@ -6,9 +6,11 @@ package salix;
 
 message RegistrationRequest {
   optional string agent_id = 1;
-  optional uint64 timestamp = 2;
-  optional string hostname = 3;
-  optional string version = 4;
+  optional string label = 2;
+  optional string rgrp = 3;
+  optional uint64 timestamp = 4;
+  optional string hostname = 5;
+  optional string version = 6;
 }
 
 message ExecutionRequest {
